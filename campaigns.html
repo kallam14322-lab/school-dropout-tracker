@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"="width=device-width, initial-scale=1.0">
+    <title>Awareness Campaigns - School Dropout Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-page">
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Dropout Tracker</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-details">
+                <span class="user-name" id="userName">Loading...</span>
+                <span class="user-role" id="userRole">Loading...</span>
+            </div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="map.html" class="nav-link">
+                    <i class="fas fa-map"></i>
+                    <span>Regional Map</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="analysis.html" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analysis</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a href="campaigns.html" class="nav-link">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Campaigns</span>
+                </a>
+            </li>
+            <li class="nav-item logout">
+                <a href="#" class="nav-link" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header class="page-header">
+            <div class="header-left">
+                <h1>Awareness Campaigns</h1>
+                <p>Manage and monitor educational awareness initiatives</p>
+            </div>
+            <div class="header-right">
+                <div class="header-actions">
+                    <div class="filter-group">
+                        <select id="campaignFilter">
+                            <option value="all">All Campaigns</option>
+                            <option value="active">Active</option>
+                            <option value="planned">Planned</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <button class="create-btn" id="createCampaignBtn" style="display: none;">
+                        <i class="fas fa-plus"></i>
+                        Create Campaign
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="campaigns-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalCampaigns">24</h3>
+                    <p>Total Campaigns</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="activeCampaignsCount">8</h3>
+                    <p>Active Campaigns</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalReach">1.2M</h3>
+                    <p>People Reached</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="successRate">76%</h3>
+                    <p>Success Rate</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="campaigns-grid" id="campaignsGrid">
+            <!-- Campaign cards will be populated by JavaScript -->
+        </div>
+
+        <!-- Government View Message -->
+        <div class="access-info" id="governmentInfo" style="display: none;">
+            <div class="info-card">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <h3>Government Access</h3>
+                    <p>As a government user, you have view-only access to campaigns. Only NGO users can create and manage campaigns.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create/Edit Campaign Modal -->
+    <div class="modal" id="campaignModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Create New Campaign</h2>
+                <button class="close-modal" id="closeModalBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form class="campaign-form" id="campaignForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="campaignName">Campaign Name *</label>
+                        <input type="text" id="campaignName" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="campaignType">Campaign Type *</label>
+                        <select id="campaignType" name="type" required>
+                            <option value="">Select Type</option>
+                            <option value="awareness">Awareness</option>
+                            <option value="enrollment">Enrollment Drive</option>
+                            <option value="literacy">Literacy Program</option>
+                            <option value="retention">Retention Initiative</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="targetRegion">Target Region *</label>
+                        <select id="targetRegion" name="region" required>
+                            <option value="">Select Region</option>
+                            <option value="uttar-pradesh">Uttar Pradesh</option>
+                            <option value="bihar">Bihar</option>
+                            <option value="west-bengal">West Bengal</option>
+                            <option value="madhya-pradesh">Madhya Pradesh</option>
+                            <option value="tamil-nadu">Tamil Nadu</option>
+                            <option value="rajasthan">Rajasthan</option>
+                            <option value="karnataka">Karnataka</option>
+                            <option value="gujarat">Gujarat</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="targetAudience">Target Audience *</label>
+                        <select id="targetAudience" name="audience" required>
+                            <option value="">Select Audience</option>
+                            <option value="parents">Parents</option>
+                            <option value="students">Students</option>
+                            <option value="community">Community Leaders</option>
+                            <option value="teachers">Teachers</option>
+                            <option value="all">All Stakeholders</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startDate">Start Date *</label>
+                        <input type="date" id="startDate" name="startDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endDate">End Date *</label>
+                        <input type="date" id="endDate" name="endDate" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="budget">Budget (₹) *</label>
+                    <input type="number" id="budget" name="budget" required min="1000">
+                </div>
+                
+                <div class="form-group">
+                    <label for="campaignDescription">Description *</label>
+                    <textarea id="campaignDescription" name="description" rows="4" required placeholder="Describe the campaign objectives and activities..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="expectedReach">Expected Reach (People)</label>
+                    <input type="number" id="expectedReach" name="expectedReach" min="100">
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i>
+                        <span id="submitBtnText">Create Campaign</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Campaign Detail Modal -->
+    <div class="modal" id="campaignDetailModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="detailModalTitle">Campaign Details</h2>
+                <button class="close-modal" id="closeDetailModalBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="campaign-detail-content" id="campaignDetailContent">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/campaigns.js"></script>
+    <script src="js/navigation.js"></script>
+</body>
+</html>
